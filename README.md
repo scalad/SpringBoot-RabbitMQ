@@ -35,3 +35,21 @@
 
 当你完成时，你可以对比在`gs-messaging-rabbitmq/complete.`目录中的结果和你的结果
 
+###使用Gradle构建
+第一步你需要建立一个基本的脚本，当你构建APP应用时你可以任何你喜欢的构建系统，但这些代码你必须要使用到[Gradle](http://gradle.org/)和[Maven](https://maven.apache.org/),如果你对这两个不熟悉，你可以参考[Building Java Projects with Gradle](https://spring.io/guides/gs/gradle)和[Building Java Projects with Maven](https://spring.io/guides/gs/maven)
+
+####1.创建目录结构
+在你项目的文件夹中创建如下的子目录结构，例如，在*nix系统中使用命令创建`mkdir -p src/main/java/hello on`
+
+	└── src
+	    └── main
+	        └── java
+	            └── hello
+
+####2.创建Gradle配置文件build.gradle
+以下来自[初始化Gradle配置文件](https://github.com/spring-guides/gs-messaging-rabbitmq/blob/master/initial/build.gradle)
+
+`build.gradle`
+
+
+
