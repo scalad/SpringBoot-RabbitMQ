@@ -47,9 +47,43 @@
 	            └── hello
 
 ####2.创建Gradle配置文件build.gradle
-以下来自[初始化Gradle配置文件](https://github.com/spring-guides/gs-messaging-rabbitmq/blob/master/initial/build.gradle)
+以下来自[初始化Gradle配置文件](https://github.com/silence940109/SpringBoot-RabbitMQ/blob/master/build.gradle)
 
 `build.gradle`
 
+	buildscript {
+	    repositories {
+	        mavenCentral()
+	    }
+	    dependencies {
+	        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE")
+	    }
+	}
+	
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
+	apply plugin: 'org.springframework.boot'
+	
+	jar {
+	    baseName = 'gs-messaging-rabbitmq'
+	    version =  '0.1.0'
+	}
+	
+	repositories {
+	    mavenCentral()
+	}
+	
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	
+	dependencies {
+	    compile("org.springframework.boot:spring-boot-starter-amqp")
+	    testCompile("junit:junit")
+	}
 
+[Spring Boot gradle plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-tools/spring-boot-gradle-plugin)提供了很多方便的特性：
 
+* 它集成了所有在类路径下的jar包并构建成单独的jar包，可执行的`über-jar`使它可以更加方便的执行和在你的服务中进行传输
+* 它为`public static void main()`方法寻找可执行的类作为标志
+* 它提供了一个内置的依赖解析器来匹配[Spring Boot Dependencies](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml)依赖版本号，你可以重写任何你希望的版本，但它默认启动时选择的版本集合

@@ -6,6 +6,12 @@
  * For more details take a look at the Java Quickstart chapter in the Gradle
  * user guide available at https://docs.gradle.org/3.0/userguide/tutorial_java_projects.html
  */
+ 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -14,11 +20,6 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE")
     }
 }
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'gs-messaging-rabbitmq'
@@ -34,5 +35,5 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-amqp")
-    testCompile("junit:junit")
+    testCompile("junit:junit:4.12")
 }
