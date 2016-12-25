@@ -294,3 +294,66 @@ public class Application {
 
 >Spring AMQP要求`Queue`,`TopicExchang`,`Binding`被Spring按照顺序定义为定理的bean
 
+####4.发送文本消息
+测试消息是通过`CommandLineRunner`发送的，它也可以等待并锁定接受者并且关闭应用程序：
+
+`src/main/java/hello/Runner.java`
+
+```Java
+package hello;
+
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Runner implements CommandLineRunner {
+
+    private final RabbitTemplate rabbitTemplate;
+    private final Receiver receiver;
+    private final ConfigurableApplicationContext context;
+
+    public Runner(Receiver receiver, RabbitTemplate rabbitTemplate,
+            ConfigurableApplicationContext context) {
+        this.receiver = receiver;
+        this.rabbitTemplate = rabbitTemplate;
+        this.context = context;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("Sending message...");
+        rabbitTemplate.convertAndSend(Application.queueName, "Hello from RabbitMQ!");
+        receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+        context.close();
+    }
+
+}
+```
+
+runner可以在测试中进行模拟，以此，reveive可以单独的进行测试
+
+####5.启动应用
+`main()`方法通过创建Spring应用环境来启动进程。这个进程启动了消息监听容器，它会开始监听消息.`Runner`bean会自动执行：它从应用上下文中检索`RabbitTemplate`并且往"sping-boot"队列中发送一个`Hello from RabbitMQ!`的消息，最后，它关闭Spring应用程序，程序结束
+
+####6.编译可执行的JAR包
+你可以使用Gradle或者Maven从命令行运行程序，或者你可以编译成一个包含了所有的依赖，类和资源的可执行的JAR文件，然后就可以直接运行。这使它在不同的环境和在整个应用程序的开发声明周期的部署中变得非常容易
+
+如果你使用的时Gradle,你需要使用`./gradlew bootRun`来运行应用程序，或者你可以使用`./gradlew build`编译成JAR文件，然后你就可以运行JAR文件了
+
+	java -jar build/libs/gs-messaging-rabbitmq-0.1.0.jar
+
+如果你使用的时Maven,你需要使用`./mvnw spring-boot:run`来运行应用程序，或者你可以使用`./mvnw clean package`编译成JAR文件，然后你就可以运行JAR文件了
+
+	java -jar target/gs-messaging-rabbitmq-0.1.0.jar
+
+>上面的结果中会创建一个可执行的JAR文件，你也可以选择[构建一个典型的war文件](https://spring.io/guides/gs/convert-jar-to-war/)
+
+然后你就可以看到如下的输出：
+
+	Sending message...
+	Received <Hello from RabbitMQ!>
+
