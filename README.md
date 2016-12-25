@@ -140,7 +140,7 @@
 * 它提供了一个内置的依赖解析器来匹配[Spring Boot Dependencies](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml)依赖版本号，你可以重写任何你希望的版本，但它默认启动时选择的版本集合
 
 ###使用IDE编译
-####1.简历RabbitMQ沙箱
+####1.建立RabbitMQ沙箱
 在你可以构建你的消息应用前，你需要建发布和订阅消息的服务器
 
 RabbitMQ是一个AMQP(Advanced Message Queuing Protocol,一个提供统一消息服务的应用层标准高级消息队列协议,是应用层协议的一个开放标准,为面向消息的中间件设计)服务器,这个服务器是免费的，你可以在[http://www.rabbitmq.com/download.html](http://www.rabbitmq.com/download.html),你可以手动的下载，或者如果你使用的Mac可以自己制作
@@ -174,4 +174,37 @@ RabbitMQ是一个AMQP(Advanced Message Queuing Protocol,一个提供统一消息
 	   
 如果这个文件在你的当前目录中你可以运行`docker-compose up`来是RabbitMQ运行在容器中
 
+####2.创建RabbitMQ消息订阅
+任何基于消息的应用程序你都需要创建一个消息订阅来响应消息的发布
+
+`src/main/java/hello/Receiver.java`
+
+```Java
+package hello;
+
+import java.util.concurrent.CountDownLatch;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Receiver {
+
+    private CountDownLatch latch = new CountDownLatch(1);
+
+    public void receiveMessage(String message) {
+        System.out.println("Received <" + message + ">");
+        latch.countDown();
+    }
+
+    public CountDownLatch getLatch() {
+        return latch;
+    }
+
+}
+```
+
+定义一个简单的`Receiver`类，类中receiveMessage方法用来接收消息，当你注册接受消息时，你可以随意命名它
+
+>为了方便，这个POJO类有一个`CountDownLatch`类的属性，它允许当消息接收到时给它一个信号量，这是你在生产环境中你不太可能实现的
+
+####3.注册监听并发布消息
 
