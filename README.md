@@ -138,3 +138,28 @@
 * 它集成了所有在类路径下的jar包并构建成单独的jar包，可执行的`über-jar`使它可以更加方便的执行和在你的服务中进行传输
 * 它为`public static void main()`方法寻找可执行的类作为标志
 * 它提供了一个内置的依赖解析器来匹配[Spring Boot Dependencies](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml)依赖版本号，你可以重写任何你希望的版本，但它默认启动时选择的版本集合
+
+###使用IDE编译
+####1.简历RabbitMQ沙箱
+在你可以构建你的消息应用前，你需要建发布和订阅消息的服务器
+
+RabbitMQ是一个AMQP(Advanced Message Queuing Protocol,一个提供统一消息服务的应用层标准高级消息队列协议,是应用层协议的一个开放标准,为面向消息的中间件设计)服务器,这个服务器是免费的，你可以在[http://www.rabbitmq.com/download.html](http://www.rabbitmq.com/download.html),你可以手动的下载，或者如果你使用的Mac可以自己制作
+
+	brew install rabbitmq
+
+打开服务器位置并使用默认的配置进行启动
+
+	rabbitmq-server
+
+你可以看到如下的一些输出信息:
+
+#	
+	            RabbitMQ 3.1.3. Copyright (C) 2007-2013 VMware, Inc.
+	##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/
+	##  ##
+	##########  Logs: /usr/local/var/log/rabbitmq/rabbit@localhost.log
+	######  ##        /usr/local/var/log/rabbitmq/rabbit@localhost-sasl.log
+	##########
+	            Starting broker... completed with 6 plugins.
+
+#
