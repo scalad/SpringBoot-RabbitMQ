@@ -152,7 +152,6 @@ RabbitMQ是一个AMQP(Advanced Message Queuing Protocol,一个提供统一消息
 	rabbitmq-server
 
 你可以看到如下的一些输出信息:
-
 #	
 	            RabbitMQ 3.1.3. Copyright (C) 2007-2013 VMware, Inc.
 	##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/
@@ -163,3 +162,16 @@ RabbitMQ是一个AMQP(Advanced Message Queuing Protocol,一个提供统一消息
 	            Starting broker... completed with 6 plugins.
 
 #
+如果你有运行在本地的docker 你也可以使用[Docker Compose](https://docs.docker.com/compose/)(一个部署多个容器的简单但是非常必要的工具)来快速的启动RabbitMQ服务器，在这个项目的根目录中有一个`docker-compose.yml`，它非常简单：
+
+`docker-compose.yml`
+
+	rabbitmq:
+	  image: rabbitmq:management
+	  ports:
+	    - "5672:5672"
+	    - "15672:15672"
+	   
+如果这个文件在你的当前目录中你可以运行`docker-compose up`来是RabbitMQ运行在容器中
+
+
