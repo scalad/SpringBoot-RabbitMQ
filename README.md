@@ -207,4 +207,90 @@ public class Receiver {
 >为了方便，这个POJO类有一个`CountDownLatch`类的属性，它允许当消息接收到时给它一个信号量，这是你在生产环境中你不太可能实现的
 
 ####3.注册监听并发布消息
+Spring AMQP的`RabbitTemplate`提供了你使用RabbitMQ发布和订阅消息所需要的一切，特别的，你需要如下配置：
+
+* 一个消息监听的容器
+* 声明队列，交换空间，并且绑定他们
+* 一个发送一些信息用来测试监听的组件
+
+>Spring Boot会自动创建连接工场和RabbitTemplate，以便减少你需要编写的代码量
+
+你将会使用`RabbitTemplate`来发送消息，并且你要使用消息监听的容器注册一个`Receiver`来接收消息。连接工场驱动使它们可以连接到RabbitMQ服务器上
+
+`src/main/java/hello/Application.java`
+
+```Java
+package hello;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class Application {
+
+    final static String queueName = "spring-boot";
+
+    @Bean
+    Queue queue() {
+        return new Queue(queueName, false);
+    }
+
+    @Bean
+    TopicExchange exchange() {
+        return new TopicExchange("spring-boot-exchange");
+    }
+
+    @Bean
+    Binding binding(Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(queueName);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+            MessageListenerAdapter listenerAdapter) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+
+    @Bean
+    MessageListenerAdapter listenerAdapter(Receiver receiver) {
+        return new MessageListenerAdapter(receiver, "receiveMessage");
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+```
+
+`@SpringBootApplication`是一个非常方便的注解，它添加了所有如下的东西：
+
+* `@Configuration`标志着这个类作为资源被这个应用程序而定义的一个bean
+* `@EnableAutoConfiguration`告诉Spring Boot启动自动添加bean是基于类路径配置，其他Beans以及各种属性的设置
+* 通常你会为Spring MVC的应用程序添加`@EnableWebMvc`注解，但是当Spring Boot看见Spring-webmvc在它的类路径下时它会自动添加，这个标志着这个应用程序是一个web应用程序，并且自动激活并配置例如`DispatcherServlet`的配置
+* `@ComponentScan`告诉Spring去寻找其他的组件，配置以及在hello包中的其他services，并且允许它使用controllers组件
+
+`main()`方法是用了Spring Boot的`SpringAPplication.run()`方法来启动一个应用程序，你注意到这里没有使用XML了吗？同样没有web.xml配置文件。这个web应用程序时纯粹的Java开发并且你不必处理任何配置信息
+
+定义在`listenerAdapter()`bean方法在定义`container()`容器时注册成为一个消息监听器，它会为"spring-boot"的消息队列进行监听。因为`Receiver`是一个POJO，在你指定它被`receiveMessage`调用时，它需要被包装到`MessageListenerAdapter`适配器中
+
+>JMS队列和AMQP队列有一些语义上的不同。例如，JMS向队列发送消息时只有一个消费者，然而AMQP队列做同样的事情，它虽然模仿JMS主题的概念，但AMQP生产者并不向队列直接发送消息，反而消息发送给的是交换空间，所以AMQP的消息它可以放到一个队列中，或者展开多个队列中。[更多](https://spring.io/understanding/AMQP)
+
+消息监听容器和接收都是你为了监听到消息所必需的，为了发布一个消息，你也需要一个Rabbit模板
+
+`queue()`方法创建了一个AMQP的队列，`exchang()`方法创建了exchange,`binding()`方法把他们两个绑定在了一起，并且定义了当RabbitTemplate发布给exchange时发生的动作
+
+>Spring AMQP要求`Queue`,`TopicExchang`,`Binding`被Spring按照顺序定义为定理的bean
 
