@@ -6,9 +6,9 @@
 可以使用本人阿里云安装好的RabbitMQ服务器
 	
 	host:http://120.27.114.229
-	username:root
+	username:root [关于RabbitMQ User Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/user_configuration)
 	password:root
-	web management: http://120.27.114.229:15672
+	web management: http://120.27.114.229:15672 [关于RabbitMQ Web Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/web_management)
 
 ###构建
 你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
