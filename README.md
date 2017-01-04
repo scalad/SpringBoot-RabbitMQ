@@ -14,7 +14,7 @@
 你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
 
 ###需要
-* 15分钟
+* 大约15分钟
 * 一款文本编辑器或者IDE
 * [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * [Gradle2.3+](http://www.gradle.org/downloads) 或者[Maven3.0+](http://maven.apache.org/download.cgi)
@@ -378,3 +378,6 @@ runner可以在测试中进行模拟，以此，reveive可以单独的进行测�
 	Sending message...
 	Received <Hello from RabbitMQ!>
 
+可以在控制台输出：
+
+![](https://github.com/silence940109/Java/blob/master/SpringBoot-RabbitMQ/image/run.jpg)
