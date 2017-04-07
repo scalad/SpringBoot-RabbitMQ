@@ -11,13 +11,13 @@
 	port:5672
 	web management: http://120.27.114.229:15672
 
-###构建
+### 构建
 你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
 
 * git clone https://github.com/silence940109/SpringBoot-RabbitMQ.git
 * gradle bootRun
 
-###需要
+### 需要
 * 大约十几分钟
 * 一款文本编辑器或者IDE
 * [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
