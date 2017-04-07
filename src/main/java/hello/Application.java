@@ -23,7 +23,7 @@ public class Application {
     
     final static String PASSWORD = "root";
 
-    final static int PORT = 15672;
+    final static int PORT = 5672;
     
     @Bean
     Queue queue() {
@@ -48,7 +48,7 @@ public class Application {
           connectionFactory.setUsername(USERNAME);
           connectionFactory.setPassword(PASSWORD);
           connectionFactory.setVirtualHost("/");
-          //±ØÐëÒªÉèÖÃ,ÏûÏ¢µÄ»Øµô
+          //ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ï¢ï¿½Ä»Øµï¿½
           connectionFactory.setPublisherConfirms(true); 
           return connectionFactory;
     } 

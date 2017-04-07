@@ -6,15 +6,31 @@
 可以使用本人阿里云安装好的RabbitMQ服务器
 	
 	host:http://120.27.114.229
-	username:root
+	username:root 
 	password:root
+	port:5672
 	web management: http://120.27.114.229:15672
 
+<<<<<<< HEAD
 ### 构建
 你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
 
 ### 需要
 * 15分钟
+=======
+* [关于RabbitMQ User Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/user_configuration)
+
+* [关于RabbitMQ Web Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/web_management)
+
+###构建
+你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
+
+* git clone https://github.com/silence940109/SpringBoot-RabbitMQ.git
+* gradle bootRun
+
+###需要
+* 大约十几分钟
+>>>>>>> 6f91ea2cc94eab2c03c1827dc9b0f80e4b0e15cf
 * 一款文本编辑器或者IDE
 * [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * [Gradle2.3+](http://www.gradle.org/downloads) 或者[Maven3.0+](http://maven.apache.org/download.cgi)
@@ -237,7 +253,15 @@ import org.springframework.context.annotation.Bean;
 public class Application {
 
     final static String queueName = "spring-boot";
+    
+    final static String HOST = "120.27.114.229";
 
+    final static String USERNAME = "root";
+    
+    final static String PASSWORD = "root";
+
+    final static int PORT = 15672;
+    
     @Bean
     Queue queue() {
         return new Queue(queueName, false);
@@ -252,6 +276,19 @@ public class Application {
     Binding binding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(queueName);
     }
+
+    @Bean  
+    public ConnectionFactory connectionFactory() {  
+    	  CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+          connectionFactory.setHost(HOST);
+          connectionFactory.setPort(PORT);
+          connectionFactory.setUsername(USERNAME);
+          connectionFactory.setPassword(PASSWORD);
+          connectionFactory.setVirtualHost("/");
+          //必须要设置,消息的回掉
+          connectionFactory.setPublisherConfirms(true); 
+          return connectionFactory;
+    } 
 
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
@@ -357,3 +394,6 @@ runner可以在测试中进行模拟，以此，reveive可以单独的进行测�
 	Sending message...
 	Received <Hello from RabbitMQ!>
 
+可以在控制台输出：
+
+![](https://github.com/silence940109/Java/blob/master/SpringBoot-RabbitMQ/image/run.jpg)
