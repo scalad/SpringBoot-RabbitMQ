@@ -11,17 +11,6 @@
 	port:5672
 	web management: http://120.27.114.229:15672
 
-<<<<<<< HEAD
-### 构建
-你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
-
-### 需要
-* 15分钟
-=======
-* [关于RabbitMQ User Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/user_configuration)
-
-* [关于RabbitMQ Web Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/web_management)
-
 ###构建
 你会使用 Spring AMQP的 RabbitTemplate构建应用系统来发布消息并且使用一个MessageListenerAdapter POJO来订阅消息
 
@@ -30,12 +19,13 @@
 
 ###需要
 * 大约十几分钟
->>>>>>> 6f91ea2cc94eab2c03c1827dc9b0f80e4b0e15cf
 * 一款文本编辑器或者IDE
 * [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * [Gradle2.3+](http://www.gradle.org/downloads) 或者[Maven3.0+](http://maven.apache.org/download.cgi)
 * 你也可以从这个项目中导入代码或者可以在导入[Spring Tool Suite(STS)](https://spring.io/guides/gs/sts)(个人非常喜欢的一款eclipse的IDE)中查看
 * RabbitMQ服务器
+* [关于RabbitMQ User Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/user_configuration)
+* [关于RabbitMQ Web Management](https://github.com/silence940109/RabbitMQ/tree/master/doc/web_management)
 
 ### 如何完成
 像许多的Spring [Getting Started guides](https://spring.io/guides)项目,你可以从头开始并完成每一步，或者你可以绕过你已经熟悉的一些步骤，无论是哪种步骤，你最终可以完成代码
